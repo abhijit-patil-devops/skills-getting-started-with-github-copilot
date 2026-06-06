@@ -41,6 +41,49 @@ activities = {
     }
 }
 
+# Additional activities
+activities.update({
+    # Sports-related
+    "Soccer Team": {
+        "description": "Competitive soccer team practicing tactics and teamwork",
+        "schedule": "Mondays, Wednesdays, 4:00 PM - 6:00 PM",
+        "max_participants": 22,
+        "participants": ["alex@mergington.edu"]
+    },
+    "Basketball Club": {
+        "description": "Pickup games and skill development in basketball",
+        "schedule": "Tuesdays, Thursdays, 5:00 PM - 7:00 PM",
+        "max_participants": 15,
+        "participants": ["maya@mergington.edu"]
+    },
+    # Artistic
+    "Art Studio": {
+        "description": "Painting, drawing, and mixed media for creative expression",
+        "schedule": "Wednesdays, 3:30 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": ["liam@mergington.edu"]
+    },
+    "Choir": {
+        "description": "Vocal ensemble practicing for concerts and events",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 40,
+        "participants": ["ava@mergington.edu"]
+    },
+    # Intellectual
+    "Debate Team": {
+        "description": "Develop public speaking and argumentation skills",
+        "schedule": "Mondays, Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 16,
+        "participants": ["noah@mergington.edu"]
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and science fair preparation",
+        "schedule": "Tuesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 25,
+        "participants": ["sophia@mergington.edu"]
+    }
+})
+
 
 @app.get("/")
 def root():
@@ -61,7 +104,9 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
-
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student is already signed up")
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
